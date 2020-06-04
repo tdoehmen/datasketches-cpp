@@ -24,20 +24,20 @@ Installing the latest cmake on OSX: brew install cmake
 
 Building and running unit tests using cmake for OSX and Linux:
 
-	$ mkdir build
-	$ cd build
-	$ cmake ..
-	$ make
-	$ make test
+    $ mkdir build
+    $ cd build
+    $ cmake ..
+    $ make
+    $ make test
 
 Building and running unit tests using cmake for Windows from the command line:
 
-  $ mkdir build
-	$ cd build
-	$ cmake ..
-	$ cd ..
-	$ cmake --build build --config Release
-	$ cmake --build build --config Release --target RUN_TESTS
+    $ mkdir build
+    $ cd build
+    $ cmake ..
+    $ cd ..
+    $ cmake --build build --config Release
+    $ cmake --build build --config Release --target RUN_TESTS
 
 ----
 

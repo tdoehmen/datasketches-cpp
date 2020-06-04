@@ -3,7 +3,7 @@
 ## Installation
 
 The release files do not include the needed python binding library ([pybind11](https://github.com/pybind/pybind11)). If building
-from a relase package, you must ensure that the pybind11 directory points to a local copy of pybind11.
+from a release package, you must ensure that the pybind11 directory points to a local copy of pybind11.
 
 An official pypi build is eventually planned but not yet available.
 
@@ -26,7 +26,7 @@ If you cloned without `--recursive`, you can add the submodule post-checkout usi
 
 ### Installing
 
-Assuming you have already checked out the library and any dependent submodules, install by simply replacing the lsat
+Assuming you have already checked out the library and any dependent submodules, install by simply replacing the last
 line of the build command with `python setup.py install`.
 
 ### Unit tests
