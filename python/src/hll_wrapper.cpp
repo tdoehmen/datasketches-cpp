@@ -20,6 +20,10 @@
 #include "hll.hpp"
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/numpy.h>
+#include <sstream>
+#include <vector>
 
 namespace py = pybind11;
 
@@ -39,6 +43,19 @@ py::object hll_sketch_serialize_compact(const hll_sketch& sk) {
 py::object hll_sketch_serialize_updatable(const hll_sketch& sk) {
   auto serResult = sk.serialize_updatable();
   return py::bytes((char*)serResult.data(), serResult.size());
+}
+
+template<typename T>
+void hll_sketch_update(hll_sketch& sk, py::array_t<T, py::array::c_style | py::array::forcecast> items) {
+  if (items.ndim() != 1) {
+    throw std::invalid_argument("input data must have only one dimension. Found: "
+          + std::to_string(items.ndim()));
+  }
+  
+  auto data = items.template unchecked<1>();
+  for (uint32_t i = 0; i < data.size(); ++i) {
+    sk.update(data(i));
+  }
 }
 
 }
@@ -89,6 +106,10 @@ void init_hll(py::module &m) {
          "Returns the size of the serialized sketch when compressing the exception table if HLL_4")
     .def("reset", &hll_sketch::reset,
          "Resets the sketch to the empty state in coupon colleciton mode")
+	.def("update", &dspy::hll_sketch_update<double>, py::arg("array"),
+         "Updates the sketch with the values in the given array")
+	.def("update", &dspy::hll_sketch_update<int64_t>, py::arg("array"),
+         "Updates the sketch with the values in the given array")
     .def("update", (void (hll_sketch::*)(int64_t)) &hll_sketch::update, py::arg("datum"),
          "Updates the sketch with the given integral value")
     .def("update", (void (hll_sketch::*)(double)) &hll_sketch::update, py::arg("datum"),
